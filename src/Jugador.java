@@ -88,160 +88,163 @@ public class Jugador {
 
 
 
-
-public int mostrarGrupos(JPanel pnl, int x, int yInicial) {
-    int yActual = yInicial;
-    int[] obtenerGrupitos = new int[NombreCarta.values().length]; 
-    
-    for (Carta carta : cartas) {
-        obtenerGrupitos[carta.getNombre().ordinal()]++;
-    }
-
-    JLabel GrupitoTitulo = new JLabel("Grupos encontrados:");
-    GrupitoTitulo.setBounds(XDISTANCIA, yActual, 300, 20);
-    pnl.add(GrupitoTitulo);
-    yActual += 20;
-
-
-    for (int i = 0; i < obtenerGrupitos.length; i++) {
-        if (obtenerGrupitos[i] >= 2) { 
-            String textoGrupo = Grupo.values()[obtenerGrupitos[i]] + " de " + NombreCarta.values()[i];
-            
-            JLabel lblGrupo = new JLabel(textoGrupo);
-            lblGrupo.setBounds(x, yActual, 400, 20);
-            pnl.add(lblGrupo);
-            
-            yActual += 20; 
-        }
-    }
-
-    return yActual; 
-}
-
-public void mostrarSobrantes(JPanel pnl, int x, int yInicial) {
-    int[] conteoNombres = new int[NombreCarta.values().length];
-    for (Carta c : cartas) {
-        conteoNombres[c.getNombre().ordinal()]++;
-    }
-
-    int yActual = yInicial;
-
-    JLabel TituloSobrantes = new JLabel("Cartas que sobran:");
-    TituloSobrantes.setBounds(XDISTANCIA, yActual, 300, 20);
-    pnl.add(TituloSobrantes);
-    yActual += 20;
-
-    for (int i = 0; i < cartas.length; i++) {
-        int ubicasionDelNombre = cartas[i].getNombre().ordinal();
-        if (conteoNombres[ubicasionDelNombre] == 1) {
-            String texto = cartas[i].getNombre() + " de " + cartas[i].getPinta();
-            JLabel renglones = new JLabel(texto);
-            renglones.setBounds(x, yActual, 300, 20);
-            pnl.add(renglones);
-            yActual += 20; 
-        }
-    }
-}
-private int[] obtenerConteo() {
-    int[] conteo = new int[NombreCarta.values().length];
-    for (Carta c : cartas) {
-        conteo[c.getNombre().ordinal()]++;
-    }
-    return conteo;
-}
-public void calcularPuntaje(JPanel pnl, int x, int yInicial) {
-    int[] contadores = obtenerConteo(); 
-    int puntajeSobrantes = 0;
-
-    for (int i = 0; i < cartas.length; i++) {
-        int indiceNombre = cartas[i].getNombre().ordinal(); //posicion del enumerarioo
-
+    //funcion para mostrar los grupos de cartas
+    public int mostrarGrupos(JPanel pnl, int x, int yInicial) {
+        int yActual = yInicial;
+        int[] obtenerGrupitos = new int[NombreCarta.values().length]; 
         
-        if (contadores[indiceNombre] == 1) {//carta sola
-            
-            int valorCarta = indiceNombre + 1;
-            
-            if (valorCarta > 10) {
-                puntajeSobrantes += 10;
-            } else {
-                puntajeSobrantes += valorCarta;
-            }
+        for (Carta carta : cartas) {
+            obtenerGrupitos[carta.getNombre().ordinal()]++;
         }
-    }
 
-    JLabel Puntaje = new JLabel("Puntos de las cartas sobrantes: " + puntajeSobrantes);
-    Puntaje.setBounds(XDISTANCIA, yInicial, 300, 20);
-    
-    pnl.add(Puntaje);
-}
-
-
-//Funcion y funciones auxiliares para escontrar las escaleras
-
-
-private int tieneCarta(NombreCarta nombre, Pinta pinta) {
-    for (Carta c : cartas) {
-        if (c.getNombre() == nombre && c.getPinta() == pinta) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-public int mostrarEscaleras(JPanel pnl, int x, int yInicial) {
-    int yActual = yInicial;
-    
-    JLabel tituloEscaleras = new JLabel("Escaleras encontradas:");
-    tituloEscaleras.setBounds(XDISTANCIA, yActual, 300, 20);
-    pnl.add(tituloEscaleras);
-    yActual += 20;
-
-    int hayAlgunaEscalera = 0;
-
-    for (Pinta p : Pinta.values()) {
-        int consecutivas = 0;
-        NombreCarta inicio = null; 
-        NombreCarta fin = null;
-
-        for (NombreCarta n : NombreCarta.values()) {
-            if (tieneCarta(n, p) == 1) {
-                if (consecutivas == 0) {
-                    inicio = n;
-                }
-                fin = n; 
-                consecutivas++;
-            } else {
-                if (consecutivas >= 3) {
-                    dibujarEscalera(pnl, x, yActual, p, inicio, fin);
-                    yActual += 20;
-                    hayAlgunaEscalera = 1;
-                }
-                consecutivas = 0;
-            }
-        }
-        
-        if (consecutivas >= 3) {
-            dibujarEscalera(pnl, x, yActual, p, inicio, fin);
-            yActual += 20;
-            hayAlgunaEscalera = 1;
-        }
-    }
-
-    if (hayAlgunaEscalera == 0) {
-        JLabel ninguna = new JLabel("Ninguna");
-        ninguna.setBounds(x, yActual, 300, 20);
-        pnl.add(ninguna);
+        JLabel GrupitoTitulo = new JLabel("Grupos encontrados:");
+        GrupitoTitulo.setBounds(XDISTANCIA, yActual, 300, 20);
+        pnl.add(GrupitoTitulo);
         yActual += 20;
+
+
+        for (int i = 0; i < obtenerGrupitos.length; i++) {
+            if (obtenerGrupitos[i] >= 2) { 
+                String textoGrupo = Grupo.values()[obtenerGrupitos[i]] + " de " + NombreCarta.values()[i];
+                
+                JLabel grupo = new JLabel(textoGrupo);
+                grupo.setBounds(x, yActual, 400, 20);
+                pnl.add(grupo);
+                
+                yActual += 20; 
+            }
+        }
+
+        return yActual; 
     }
 
-    return yActual;
-}
+    //funcion para mostrar las cartas sobrantes
+    public void mostrarSobrantes(JPanel pnl, int x, int yInicial) {
+        int[] conteoNombres = new int[NombreCarta.values().length];
+        for (Carta c : cartas) {
+            conteoNombres[c.getNombre().ordinal()]++;
+        }
 
-private void dibujarEscalera(JPanel pnl, int x, int y, Pinta p, NombreCarta inicio, NombreCarta fin) {
-    String mensaje = "Escalera de " + p + ": " + inicio + " a " + fin;
-    
-    JLabel mensajeEscalera = new JLabel(mensaje);
-    mensajeEscalera.setBounds(x, y, 400, 20);
-    pnl.add(mensajeEscalera);
-}
+        int yActual = yInicial;
+
+        JLabel TituloSobrantes = new JLabel("Cartas que sobran:");
+        TituloSobrantes.setBounds(XDISTANCIA, yActual, 300, 20);
+        pnl.add(TituloSobrantes);
+        yActual += 20;
+
+        for (int i = 0; i < cartas.length; i++) {
+            int ubicasionDelNombre = cartas[i].getNombre().ordinal();
+            if (conteoNombres[ubicasionDelNombre] == 1) {
+                String texto = cartas[i].getNombre() + " de " + cartas[i].getPinta();
+                JLabel renglones = new JLabel(texto);
+                renglones.setBounds(x, yActual, 300, 20);
+                pnl.add(renglones);
+                yActual += 20; 
+            }
+        }
+    }
+
+    private int[] obtenerConteo() {
+        int[] conteo = new int[NombreCarta.values().length];
+        for (Carta c : cartas) {
+            conteo[c.getNombre().ordinal()]++;
+        }
+        return conteo;
+    }
+
+    //funcion para calcular el puntaje de las cartas sobrantes
+    public void calcularPuntaje(JPanel pnl, int x, int yInicial) {
+        int[] contadores = obtenerConteo(); 
+        int puntajeSobrantes = 0;
+
+        for (int i = 0; i < cartas.length; i++) {
+            int indiceNombre = cartas[i].getNombre().ordinal(); //posicion del enumerarioo
+
+            
+            if (contadores[indiceNombre] == 1) {//carta sola
+                
+                int valorCarta = indiceNombre + 1;
+                
+                if (valorCarta > 10) {
+                    puntajeSobrantes += 10;
+                } else {
+                    puntajeSobrantes += valorCarta;
+                }
+            }
+        }
+
+        JLabel Puntaje = new JLabel("Puntos de las cartas sobrantes: " + puntajeSobrantes);
+        Puntaje.setBounds(XDISTANCIA, yInicial, 300, 20);
+        
+        pnl.add(Puntaje);
+    }
+
+
+    //Funcion y funciones auxiliares para escontrar las escaleras
+
+    private int tieneCarta(NombreCarta nombre, Pinta pinta) {
+        for (Carta c : cartas) {
+            if (c.getNombre() == nombre && c.getPinta() == pinta) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    public int mostrarEscaleras(JPanel pnl, int x, int yInicial) {
+        int yActual = yInicial;
+        
+        JLabel tituloEscaleras = new JLabel("Escaleras encontradas:");
+        tituloEscaleras.setBounds(XDISTANCIA, yActual, 300, 20);
+        pnl.add(tituloEscaleras);
+        yActual += 20;
+
+        int hayAlgunaEscalera = 0;
+
+        for (Pinta p : Pinta.values()) {
+            int consecutivas = 0;
+            NombreCarta inicio = null; 
+            NombreCarta fin = null;
+
+            for (NombreCarta n : NombreCarta.values()) {
+                if (tieneCarta(n, p) == 1) {
+                    if (consecutivas == 0) {
+                        inicio = n;
+                    }
+                    fin = n; 
+                    consecutivas++;
+                } else {
+                    if (consecutivas >= 3) {
+                        dibujarEscalera(pnl, x, yActual, p, inicio, fin);
+                        yActual += 20;
+                        hayAlgunaEscalera = 1;
+                    }
+                    consecutivas = 0;
+                }
+            }
+            
+            if (consecutivas >= 3) {
+                dibujarEscalera(pnl, x, yActual, p, inicio, fin);
+                yActual += 20;
+                hayAlgunaEscalera = 1;
+            }
+        }
+
+        if (hayAlgunaEscalera == 0) {
+            JLabel ninguna = new JLabel("Ninguna");
+            ninguna.setBounds(x, yActual, 300, 20);
+            pnl.add(ninguna);
+            yActual += 20;
+        }
+
+        return yActual;
+    }
+
+    private void dibujarEscalera(JPanel pnl, int x, int y, Pinta p, NombreCarta inicio, NombreCarta fin) {
+        String mensaje = "Escalera de " + p + ": " + inicio + " a " + fin;
+        
+        JLabel mensajeEscalera = new JLabel(mensaje);
+        mensajeEscalera.setBounds(x, y, 400, 20);
+        pnl.add(mensajeEscalera);
+    }
 }

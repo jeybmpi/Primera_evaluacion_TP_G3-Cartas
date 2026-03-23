@@ -65,10 +65,13 @@ private void repartir() {
 
     int grupito = jugador1.mostrarGrupos(pnlJugador1, 50, 150);
     int grupito2 = jugador1.mostrarEscaleras(pnlJugador1, 50, grupito + 10);
+
     jugador1.mostrarSobrantes(pnlJugador1, 50, grupito2 + 10);
     jugador1.calcularPuntaje(pnlJugador1, 50, 450); 
+
     int grupito3 = jugador2.mostrarGrupos(pnlJugador2, 50, 150);
     int grupito4 = jugador2.mostrarEscaleras(pnlJugador2, 50, grupito3 + 10);
+    
     jugador2.mostrarSobrantes(pnlJugador2, 50, grupito4 + 10);
     jugador2.calcularPuntaje(pnlJugador2, 50, 450);
 
